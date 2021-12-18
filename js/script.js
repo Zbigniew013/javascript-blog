@@ -56,7 +56,69 @@ this.classList.add('active');
 }
 
 
+
+
+/*  G E N E R A T E   T I T L E   L I N K S  */
+
+{
+
+  const optArticleSelector = '.post',
+  optTitleSelector = '.post-title',
+  optTitleListSelector = '.titles';
+
+function generateTitleLinks(){
+
+  /* remove contents of titleList */
+
+  const titleList = document.querySelector(optTitleListSelector);
+// console.log(titleList)
+  titleList.innerHTML = '';
+
+  /* for each article */
+
+  const articles = document.querySelectorAll(optArticleSelector);
+console.log(articles);
+
+let html = '';
+
+for (const article of articles) {
+
+    /* get the article id */
+
+    const articleId = article.getAttribute('id');
+
+    /* find the title element */
+    /* get the title from the title element */
+
+    const articleTitle = article.querySelector(optTitleSelector).innerHTML;
+console.log(articleTitle);
+
+
+    /* create HTML of the link */
+
+    const linkHTML = '<li><a href="#' + articleId + '"><span>' + articleTitle + '</span></a></li>';
+    // console.log(linkHTML);
+
+
+    /* insert link into titleList */
+
+    // titleList.innerHTML = titleList.innerHTML + linkHTML;
+    // titleList.insertAdjacentHTML("beforeend", linkHTML);
+    html = html + linkHTML;
+
+    console.log(html);
+  }
+  titleList.innerHTML = html;
+
+}
+
+generateTitleLinks();
+
+}
+
+
 const links = document.querySelectorAll('.titles a');
+console.log(links);
 
 for(let link of links){
   link.addEventListener('click', titleClickHandler);
