@@ -63,8 +63,9 @@ this.classList.add('active');
   optArticleTagsSelector = '.post-tags .list',
   optArticleAuthorSelector = '.post-author',
   optTagsListSelector = '.tags.list',
-  optCloudClassCount = '5',
-  optCloudClassPrefix = 'tag-size-';
+  optCloudClassCount = 5,
+  optCloudClassPrefix = 'tag-size-',
+  optAuthorsListSelector = '.authors.list';
 
   function generateTitleLinks(customSelector = ''){
 
@@ -203,7 +204,7 @@ function generateTags(){
 
 
   const tagsParams = calculateTagsParams(allTags);
-  console.log('tagsParams:', tagsParams)
+  // console.log('tagsParams:', tagsParams)
 
   /* [NEW] create variable for all links HTML code */
   let allTagsHTML = '';
@@ -213,8 +214,9 @@ function generateTags(){
 
   /* [NEW] generate code of a link and add it to allTagsHTML */
   // allTagsHTML += '<li><a href="#tag-' + tag + '">' + tag + ' (' + allTags[tag] + ') ' + '</a></li>';
-  const tagLinkHTML = '<li><a class="tag-size-' + calculateTagClass(allTags[tag], tagsParams) + '" href="#tag-' + tag + '">' + tag + ' (' + allTags[tag] + ') ' + '</a></li>';
-  console.log('tagLinkHTML:', tagLinkHTML);
+  // const tagLinkHTML = '<li><a class="tag-size-' + calculateTagClass(allTags[tag], tagsParams) + '" href="#tag-' + tag + '">' + tag + ' (' + allTags[tag] + ') ' + '</a></li>';
+  const tagLinkHTML = '<li><a class="tag-size-' + calculateTagClass(allTags[tag], tagsParams) + '" href="#tag-' + tag + '">' + tag + ' ' + '</a></li>';
+  // console.log('tagLinkHTML:', tagLinkHTML);
 
   allTagsHTML += tagLinkHTML;
 
@@ -302,8 +304,11 @@ addClickListenersToTags();
   optTitleSelector = '.post-title',
   optTitleListSelector = '.titles',
   optArticleTagsSelector = '.post-tags .list',
-  optArticleAuthorSelector = '.post-author';
-
+  optArticleAuthorSelector = '.post-author',
+  optAuthorsListSelector = '.authors.list';
+  
+    /* [NEW] create a new variable allTags with an empty array */
+    let allAuthors = {};
 
     /* find all articles */
     const articles = document.querySelectorAll(optArticleSelector);
@@ -329,12 +334,37 @@ addClickListenersToTags();
    
       /* add generated code to HTML variable */
       html = html + linkHTML;
+ 
+      /* [NEW] check if this link is NOT already in allTags */
+      if(!allAuthors[author]){
+       /* [NEW] add tag to allTags object */
+       allAuthors[author] = 1;
+      } else {
+        allAuthors[author]++;
+      }
 
       /* insert HTML of all the links into the tags wrapper */
       authorsWrapperLinks.innerHTML = html;
     
     /* END LOOP: for every article: */
     }
+
+    /* [NEW] find list of tags in right column */
+    const authorList = document.querySelector(optAuthorsListSelector);
+
+    /* [NEW] create variable for all links HTML code */
+    let allAuthorsHTML = '';
+
+    /* [NEW] START LOOP: for each tag in allTags: */
+    for(let author in allAuthors){
+    /* [NEW] generate code of a link and add it to allTagsHTML */
+    // allAuthorsHTML += author + ' (' + allAuthors[author] + ') ';
+    allAuthorsHTML += '<li><a href="#author-' + author + '">' + author + ' (' + allAuthors[author] + ') ' + '</a></li>';
+    
+    /* [NEW] END LOOP: for each tag in allTags: */
+    }
+    /*[NEW] add HTML from allTagsHTML to tagList */
+    authorList.innerHTML = allAuthorsHTML;
   }
   generateAuthors();
 
